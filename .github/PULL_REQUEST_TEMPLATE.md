@@ -14,11 +14,9 @@ _Please delete options that are not relevant and put an `x` in the boxes that ap
 
 Fixes # (issue)
 
-What part of the collection has been modified ?
+What part of the chart has been modified ?
 _Please delete options that are not relevant and put an `x` in the boxes that apply_
-- [ ] Roles (add a role or upgrade an existing one)
-- [ ] Plugins (add a plugin or upgrade an existing one)
-- [ ] Playbooks (add a playbook or upgrade an existing one)
+- [ ] Templates (add or upgrade an resources)
 - [ ] Tooling (no change made on the collection itself)
 
 ## Checklist

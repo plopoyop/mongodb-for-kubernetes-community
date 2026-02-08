@@ -1,0 +1,82 @@
+name: example-mongodb
+members: 3
+version: "8.0.18"
+persistent: true
+adminPassword: change-me
+user:
+  name: admin
+  db: admin
+  passwordSecretRef: mongo-admin-password
+  roles:
+    - name: clusterAdmin
+      db: admin
+    - name: userAdminAnyDatabase
+      db: admin
+    - name: dbAdminAnyDatabase
+      db: admin
+    - name: readWriteAnyDatabase
+      db: admin
+scramCredentialsSecretName: ""
+connectionStringSecretName: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+
+dataVolumeStorage: "10Gi"
+logVolumeStorage: "2Gi"
+
+additionalMongodConfig: {}
+additionalConnectionStringConfig: {}
+containersAdditionalConfig: {}
+
+metrics:
+  enabled: false
+
+backup:
+  enabled: false
+  cronjob:
+    schedule: "@daily"
+    timeZone: "UTC"
+    concurrencyPolicy: "Forbid"
+    failedJobsHistoryLimit: 1
+    successfulJobsHistoryLimit: 3
+    startingDeadlineSeconds: ""
+    ttlSecondsAfterFinished: ""
+    restartPolicy: OnFailure
+    container_env: []
+    container_secret_env: []
+    image:
+      repository: bash
+      tag: latest
+      pullPolicy: IfNotPresent
+    backoffLimit: 6
+    containerSecurityContext:
+      # enabled: true
+      enabled: false
+      seLinuxOptions: {}
+      # runAsUser: 1001
+      # runAsGroup: 1001
+      # runAsNonRoot: true
+      runAsNonRoot: false
+      privileged: false
+      # readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      seccompProfile:
+        type: "RuntimeDefault"
+    resourcesPreset: "none"
+    resources: {}
+    storage:
+      existingClaim: ""
+      resourcePolicy: ""
+      # storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      annotations: {}
+      mountPath: /backup/mongodb
+      # subPath: ""
+      # volumeClaimTemplates:
+      #   selector: {}

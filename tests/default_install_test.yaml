@@ -1,0 +1,48 @@
+---
+suite: default install
+tests:
+  - it: should generate the default objects for Mongodb Community CRDs
+    capabilities:
+      apiVersions:
+        - networking.k8s.io/v1
+    asserts:
+      - isKind:
+          of: MongoDBCommunity
+        template: mongodb.yaml
+      - isKind:
+          of: Role
+        template: role.yaml
+      - isKind:
+          of: RoleBinding
+        template: role_binding.yaml
+      - isKind:
+          of: Secret
+        template: secrets.yaml
+      - isKind:
+          of: ServiceAccount
+        template: serviceaccount.yaml
+  - it: should have the correct naming for each object
+    capabilities:
+      apiVersions:
+        - networking.k8s.io/v1
+    asserts:
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mongodb-instance
+        template: mongodb.yaml
+      - equal:
+          path: metadata.name
+          value: mongodb-database
+        template: role.yaml
+      - equal:
+          path: metadata.name
+          value: mongodb-database
+        template: role_binding.yaml
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-mongodb-instance-mongo-admin-password
+        template: secrets.yaml
+      - equal:
+          path: metadata.name
+          value: mongodb-kubernetes-appdb
+        template: serviceaccount.yaml

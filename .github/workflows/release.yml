@@ -1,73 +1,139 @@
 ---
-name: New release
+name: Release Charts
 
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
+
 
 jobs:
-  generate_changelog:
-    name: create release draft
+  mongodb:
+    name: Release mongodb chart
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@master"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config --global --add safe.directory $GITHUB_WORKSPACE
 
-      - name: calculate next version
+      - name: Get Previous tag
+        id: previous_tag
+        uses: WyriHaximus/github-action-get-previous-tag@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Calculate next version
         id: version
         uses: patrickjahns/version-drafter-action@v1
         with:
           config-name: version-drafter.yml
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check if tag exists
+        id: tag_exists
+        run: |
+          TAG_EXISTS=false
+          if git tag -l | grep -E "^${{ steps.version.outputs.next-version }}$" > /dev/null; then
+            TAG_EXISTS=true
+          fi
+          echo "exists=$TAG_EXISTS" >> $GITHUB_OUTPUT
+
+      - name: Skip if no new release
+        if: steps.tag_exists.outputs.exists == 'true'
+        run: |
+          echo "Tag ${{ steps.version.outputs.next-version }} already exists, skipping release"
+          exit 0
+
+      - name: Update Chart.yaml version
+        if: steps.tag_exists.outputs.exists != 'true'
+        run: |
+          # Utiliser yq si disponible, sinon sed
+          if command -v yq &>/dev/null; then
+            yq -i ".version = \"${{ steps.version.outputs.next-version }}\"" Chart.yaml
+          else
+            sed -i "s/^version:.*/version: ${{ steps.version.outputs.next-version }}/" Chart.yaml
+          fi
+          cat Chart.yaml
 
       - name: Generate changelog
+        if: steps.tag_exists.outputs.exists != 'true'
         uses: janheinrichmerker/action-github-changelog-generator@v2.4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           configureSections: '{"features": {"prefix":"## 🚀 New Features","labels":["feature", "enhancement", "improvements"]}, "bugs": {"prefix":"## 🐛 Bug Fixes","labels":["fix", "bug", "bugfix"]}, "tests": {"prefix":"## 🧪 Tests","labels":["test"]}, "documentation": {"prefix":"## 📖 Documentation Updates","labels":["docs", "documentation", "doc"]}, "dependency": {"prefix":"## ⚙️ Dependencies","labels":["dependency"]}}'
           futureRelease: ${{ steps.version.outputs.next-version }}
 
-      - name: push changelog
+      - name: Commit Chart.yaml and CHANGELOG.md
+        if: steps.tag_exists.outputs.exists != 'true'
         uses: github-actions-x/commit@v2.9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          push-branch: 'main'
-          commit-message: 'update changelog'
-          force-add: 'true'
-          files: CHANGELOG.md
+          push-branch: main
+          commit-message: "chore: release ${{ steps.version.outputs.next-version }}"
+          force-add: "true"
+          files: Chart.yaml CHANGELOG.md
           name: CI
+          email: ${{ github.actor }}@users.noreply.github.com
 
-      - name: Generate changelog for the release
+      - name: Create and push tag
+        if: steps.tag_exists.outputs.exists != 'true'
         run: |
-          sed '/## \[${{ steps.previoustag.outputs.tag }}\]/Q' CHANGELOG.md > CHANGELOGRELEASE.md
-
-      - name: Read CHANGELOG.md
-        id: package
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: ./CHANGELOGRELEASE.md
-
-      - name: Delete old drafts
-        uses: hugo19941994/delete-draft-releases@v2.0.0
+          git tag -a "${{ steps.version.outputs.next-version }}" -m "Release ${{ steps.version.outputs.next-version }}"
+          git push origin "${{ steps.version.outputs.next-version }}"
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Release draft
-        uses: softprops/action-gh-release@v2
+      - name: Setup Helm
+        if: steps.tag_exists.outputs.exists != 'true'
+        uses: azure/setup-helm@v4
         with:
+          version: v3.19.1
+
+      - name: Generate default static install
+        if: steps.tag_exists.outputs.exists != 'true'
+        run: |
+          helm template mongodb . -n mongodb > mongodb.yaml
+
+      - name: Extract changelog for release body
+        if: steps.tag_exists.outputs.exists != 'true'
+        id: changelog_body
+        run: |
+          sed "/## \[${{ steps.previous_tag.outputs.tag }}\]/Q" CHANGELOG.md | head -n -1 > release_changelog.md
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          cat release_changelog.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create release
+        if: steps.tag_exists.outputs.exists != 'true'
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.version.outputs.next-version }}
           name: ${{ steps.version.outputs.next-version }}
-          tag_name: ${{ steps.version.outputs.next-version }}
-          body: |
-            ${{ steps.package.outputs.content }}
-          draft: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          body: ${{ steps.changelog_body.outputs.body }}
+          prerelease: ${{ contains(steps.version.outputs.next-version, '-') }}
+          artifacts: mongodb.yaml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Helm chart
+        if: steps.tag_exists.outputs.exists != 'true'
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+          charts_dir: "."
+          charts_url: "https://plopoyop.github.io/"
+          owner: plopoyop
+          repository: plopoyop.github.io
+          branch: main
+          target_dir: charts/mongodb-instance
+          index_dir: charts/
+          commit_username: plopoyop
+          commit_email: plopoyop@users.noreply.github.com

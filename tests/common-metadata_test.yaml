@@ -1,0 +1,19 @@
+---
+suite: resources contains metadata
+templates:
+  - mongodb.yaml
+  - role_binding.yaml
+  - role.yaml
+  - secrets.yaml
+  - serviceaccount.yaml
+tests:
+  - it: "should contains labels metadata"
+    asserts:
+      - isNotEmpty:
+          path: metadata.labels
+      - isSubset:
+          path: metadata.labels
+          content:
+            app.kubernetes.io/instance: RELEASE-NAME
+            app.kubernetes.io/managed-by: Helm
+            app.kubernetes.io/name: mongodb-instance
