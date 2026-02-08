@@ -1,0 +1,200 @@
+---
+suite: Mongodb replicat configuration
+templates:
+  - mongodb.yaml
+tests:
+  - it: should provide expected defaults
+    asserts:
+      - equal:
+          path: spec.members
+          value: 3
+      - equal:
+          path: spec.type
+          value: "ReplicaSet"
+      - equal:
+          path: spec.version
+          value: "8.0.18"
+      - equal:
+          path: spec.persistent
+          value: true
+      - equal:
+          path: spec.users[0].name
+          value: admin
+      - equal:
+          path: spec.users[0].db
+          value: admin
+      - equal:
+          path: spec.users[0].passwordSecretRef.name
+          value: RELEASE-NAME-mongodb-instance-mongo-admin-password
+      - equal:
+          path: spec.users[0].roles
+          value:
+            - {name: clusterAdmin, db: admin}
+            - {name: userAdminAnyDatabase, db: admin}
+            - {name: dbAdminAnyDatabase, db: admin}
+            - {name: readWriteAnyDatabase, db: admin}
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[0].metadata.name
+          value: "data-volume"
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[0].spec.resources.requests.storage
+          value: "10Gi"
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[1].metadata.name
+          value: "logs-volume"
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[1].spec.resources.requests.storage
+          value: "2Gi"
+
+  - it: should have the specified members number
+    set:
+      members: 1
+    asserts:
+      - equal:
+          path: spec.members
+          value: 1
+  - it: should have the specified version and feature compatibility version
+    set:
+      version: "8.0.4"
+      featureCompatibilityVersion: "8.0"
+    asserts:
+      - equal:
+          path: spec.version
+          value: "8.0.4"
+      - equal:
+          path: spec.featureCompatibilityVersion
+          value: "8.0"
+  - it: should set secrets names
+    set:
+      scramCredentialsSecretName: "scram-secret"
+      connectionStringSecretName: "connection-string-secret"
+    asserts:
+      - equal:
+          path: spec.users[0].scramCredentialsSecretName
+          value: "scram-secret"
+      - equal:
+          path: spec.users[0].connectionStringSecretName
+          value: "connection-string-secret"
+  - it: should handle user modification
+    set:
+      user:
+        name: notadmin
+        db: authdb
+        passwordSecretRef: mongo-notadmin-password
+    asserts:
+      - equal:
+          path: spec.users[0].name
+          value: notadmin
+      - equal:
+          path: spec.users[0].db
+          value: authdb
+      - equal:
+          path: spec.users[0].passwordSecretRef.name
+          value: RELEASE-NAME-mongodb-instance-mongo-notadmin-password
+
+  - it: should handle multiple user roles
+    set:
+      user:
+        roles:
+          - name: "readWrite"
+            db: "admin"
+          - name: "dbAdmin"
+            db: "admin"
+    asserts:
+      - equal:
+          path: spec.users[0].roles[0].name
+          value: "readWrite"
+      - equal:
+          path: spec.users[0].roles[0].db
+          value: "admin"
+      - equal:
+          path: spec.users[0].roles[1].name
+          value: "dbAdmin"
+      - equal:
+          path: spec.users[0].roles[1].db
+          value: "admin"
+
+  - it: should correctly apply additional mongod config
+    set:
+      additionalMongodConfig:
+        operationProfiling:
+          mode: slowOp
+          slowOpThresholdMs: 100
+    asserts:
+      - equal:
+          path: spec.additionalMongodConfig.operationProfiling.mode
+          value: "slowOp"
+      - equal:
+          path: spec.additionalMongodConfig.operationProfiling.slowOpThresholdMs
+          value: 100
+
+  - it: should correctly apply connection string config
+    set:
+      additionalConnectionStringConfig:
+        readPreference: "primary"
+        retryWrites: true
+    asserts:
+      - equal:
+          path: spec.additionalConnectionStringConfig.readPreference
+          value: "primary"
+      - equal:
+          path: spec.additionalConnectionStringConfig.retryWrites
+          value: true
+
+  - it: should correctly apply stateful set config
+    set:
+      dataVolumeStorage: "15Gi"
+      logVolumeStorage: "5Gi"
+      containersAdditionalConfig:
+        - name: mongod
+          resources:
+            limits:
+              cpu: "1"
+              memory: 900M
+            requests:
+              cpu: "500m"
+              memory: 400M
+        - name: mongodb-agent
+          readinessProbe:
+            failureThreshold: 40
+            initialDelaySeconds: 5
+            timeout: 60
+    asserts:
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[0].metadata.name
+          value: "data-volume"
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[0].spec.resources.requests.storage
+          value: "15Gi"
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[1].metadata.name
+          value: "logs-volume"
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[1].spec.resources.requests.storage
+          value: "5Gi"
+      - equal:
+          path: spec.statefulSet.spec.template.spec.containers[0].name
+          value: "mongod"
+      - equal:
+          path: spec.statefulSet.spec.template.spec.containers[0].resources.limits
+          value: {cpu: "1", memory: "900M"}
+      - equal:
+          path: spec.statefulSet.spec.template.spec.containers[1].name
+          value: "mongodb-agent"
+      - equal:
+          path: spec.statefulSet.spec.template.spec.containers[1].readinessProbe
+          value: { failureThreshold: 40, initialDelaySeconds: 5, timeout: 60}
+
+  - it: should correctly apply metrics if enabled
+    set:
+      metrics:
+        enabled: true
+        username: "user"
+        passwordSecretRef: "passSecretRef"
+    asserts:
+      - equal:
+          path: spec.prometheus.username
+          value: "user"
+      - equal:
+          path: spec.prometheus.passwordSecretRef.name
+          value: "RELEASE-NAME-mongodb-instance-passSecretRef"

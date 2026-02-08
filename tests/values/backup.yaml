@@ -1,0 +1,42 @@
+connectionStringSecretName: "connection-string-secret"
+
+dataVolumeStorage: "20Gi"
+
+backup:
+  enabled: true
+  cronjob:
+    schedule: "*/15 * * * *"
+    timeZone: "Europe/Paris"
+    command:
+      - "bash"
+      - "-c"
+      - "/usr/local/bin/backup_mongodb.sh;"
+    container_secret_env:
+      - name: "S3_ACCESS_KEY"
+        secret_key: "s3_access_key"
+        value: "ak"
+      - name: "S3_SECRET_KEY"
+        secret_key: "s3_secret_key"
+        value: "as"
+    container_env:
+      - name: "MY_ENV_VAR"
+        value: "my_value"
+    storage:
+      mountPath: "/backup"
+      subPath: "daily"
+      resourcePolicy: "keep"
+
+    imagePullSecrets:
+      - name: "my-secret"
+        registry: "docker.io"
+        username: "username"
+        password: "password"
+        email: "user@example.com"
+    image:
+      repository: mongo-backup
+      tag: latest
+      pullPolicy: Always
+
+    concurrencyPolicy: Allow
+    failedJobsHistoryLimit: 3
+    successfulJobsHistoryLimit: 2

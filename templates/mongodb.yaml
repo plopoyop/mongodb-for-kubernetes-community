@@ -1,0 +1,83 @@
+{{- $fullName := include "mongodb.fullname" . -}}
+---
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: {{ include "mongodb.fullname" . }}
+  labels:
+  {{- include "mongodb.labels" . | nindent 4 }}
+spec:
+  members: {{ .Values.members }}
+  type: "ReplicaSet"
+  version: {{ .Values.version }}
+{{- if .Values.featureCompatibilityVersion }}
+  featureCompatibilityVersion: "{{ .Values.featureCompatibilityVersion }}"
+{{- end }}
+  persistent: {{ .Values.persistent }}
+  security:
+    authentication:
+      modes: ["SCRAM"]
+
+  statefulSet:
+    spec:
+      volumeClaimTemplates:
+        - metadata:
+            name: data-volume
+          spec:
+            accessModes: [ "ReadWriteOnce" ]
+            resources:
+              requests:
+                storage: {{ .Values.dataVolumeStorage }}
+        - metadata:
+            name: logs-volume
+          spec:
+            accessModes: [ "ReadWriteOnce" ]
+            resources:
+              requests:
+                storage: {{ .Values.logVolumeStorage }}
+
+{{- if not (empty .Values.containersAdditionalConfig) }}
+      template:
+        spec:
+          containers:
+{{- with .Values.containersAdditionalConfig }}
+{{- toYaml . | nindent 12 }}
+{{- end }}
+{{- end }}
+
+  users:
+    - name: {{ .Values.user.name }}
+      db: {{ .Values.user.db }}
+      passwordSecretRef:
+        name: {{ include "mongodb.fullname" . }}-{{ .Values.user.passwordSecretRef }}
+      roles:
+      {{- range .Values.user.roles }}
+          - name: {{ .name }}
+            db: {{ .db }}
+      {{- end}}
+      {{ if .Values.scramCredentialsSecretName }}
+      scramCredentialsSecretName: {{ .Values.scramCredentialsSecretName }}
+      {{ end }}
+      {{ if .Values.connectionStringSecretName }}
+      connectionStringSecretName: {{ .Values.connectionStringSecretName }}
+      {{ end }}
+  additionalMongodConfig:
+    storage.wiredTiger.engineConfig.journalCompressor: zlib
+
+    {{- with .Values.additionalMongodConfig }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+
+  additionalConnectionStringConfig:
+    {{- with .Values.additionalConnectionStringConfig }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+
+{{- if .Values.metrics.enabled -}}
+{{- with .Values.metrics }}
+  prometheus:
+    username: {{ .username }}
+    passwordSecretRef:
+      name: "{{ $fullName }}-{{ .passwordSecretRef }}"
+{{- end }}
+{{- end }}

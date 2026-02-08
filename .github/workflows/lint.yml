@@ -1,0 +1,24 @@
+---
+name: Lint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'templates/**'
+      - '.github/workflows/lint.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'templates/**'
+      - '.github/workflows/lint.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install devbox
+        uses: jetify-com/devbox-install-action@v0.14.0
+      - name: Run Linter
+        run: devbox run -- task lint

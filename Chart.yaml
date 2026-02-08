@@ -1,0 +1,17 @@
+apiVersion: v2
+name: mongodb-instance
+description: Deploy and manage a MongoDB ReplicaSet on Kubernetes using the MongoDB Kubernetes Operator.
+
+type: application
+
+keywords:
+  - mongodb
+  - database
+  - nosql
+  - kubernetes
+  - operator
+
+icon: https://mongodb-images-new.s3.eu-west-1.amazonaws.com/leaf-green-dark.png
+
+version: 0.1.0
+appVersion: "8.0.18"

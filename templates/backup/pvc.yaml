@@ -1,0 +1,27 @@
+{{- if .Values.backup.enabled -}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mongodb.fullname" . }}-mongodump
+  labels:
+    app.kubernetes.io/component: mongodump
+    {{- include "mongodb.labels" . | nindent 4 }}
+    {{- if or (.Values.backup.cronjob.annotations) (.Values.backup.cronjob.storage.resourcePolicy) }}
+  annotations:
+      {{- with .Values.backup.cronjob.annotations }}
+        {{- toYaml . | nindent 4 }}
+      {{- end }}
+    {{- end }}
+    {{- if .Values.backup.cronjob.storage.resourcePolicy }}
+    helm.sh/resource-policy: {{ .Values.backup.cronjob.storage.resourcePolicy | quote }}
+    {{- end }}
+spec:
+  accessModes:
+  {{- range .Values.backup.cronjob.storage.accessModes }}
+    - {{ . | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.dataVolumeStorage | quote }}
+{{- end }}
