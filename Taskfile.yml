@@ -1,0 +1,57 @@
+---
+version: '3'
+
+dotenv: ['.env']
+
+vars:
+  CHART_VERSION:
+    sh: helm show chart . | yq -r '.version'
+  CHART_NAME: mongodb
+
+tasks:
+  default:
+    cmds:
+      - task -l
+    silent: true
+
+  prepare:
+    desc: "Prepare development environment"
+    cmds:
+      - helm plugin install https://github.com/helm-unittest/helm-unittest.git || true
+      - task: pre-commit
+
+  pre-commit:
+    desc: "Install prek hooks"
+    cmds:
+      - prek install
+    sources:
+      - .pre-commit-config.yaml
+    generates:
+      - .git/hooks/pre-commit
+    method: checksum
+
+  check:
+    desc: "Run prek hooks"
+    cmds:
+      - prek run -a
+
+  lint:
+    desc: "Run lint"
+    cmds:
+      - helm lint .
+
+  tests:unit:
+    desc: "Run unit tests"
+    cmds:
+      - helm unittest .
+
+  package:
+    cmds:
+      - echo {{.CHART_VERSION}}
+      - helm package .
+    sources:
+      - templates/**/*
+      - Chart.yaml
+      - values.yaml
+    generates:
+      - "{{.CHART_NAME}}-{{.CHART_VERSION}}.tgz"
