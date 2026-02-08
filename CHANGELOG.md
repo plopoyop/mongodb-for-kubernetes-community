@@ -6,6 +6,7 @@
 
 ## 🚀 New Features
 
+- Initial Chart version [\#2](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/2) ([plopoyop](https://github.com/plopoyop))
 - Add repository tooling [\#1](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/1) ([plopoyop](https://github.com/plopoyop))
 
 
