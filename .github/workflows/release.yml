@@ -128,7 +128,7 @@ jobs:
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.RELEASE_TOKEN }}
-          charts_dir: "."
+          charts_dir: "../"
           charts_url: "https://plopoyop.github.io/"
           owner: plopoyop
           repository: plopoyop.github.io
