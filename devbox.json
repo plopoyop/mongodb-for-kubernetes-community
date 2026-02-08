@@ -1,0 +1,10 @@
+{
+    "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/main/.schema/devbox.schema.json",
+    "packages": [
+      "git@2.52.0",
+      "go-task@3.45.5",
+      "kubernetes-helm@3.19.1",
+      "prek@0.2.30",
+      "yq@3.4.3"
+    ]
+  }
