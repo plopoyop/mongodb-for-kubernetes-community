@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.2) (2026-02-09)
+
+[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.1...0.2.2)
+
+## 🐛 Bug Fixes
+
+- Fix Workflows [\#6](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/6) ([plopoyop](https://github.com/plopoyop))
+
 ## [0.2.1](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.1) (2026-02-09)
 
 [Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.0...0.2.1)
