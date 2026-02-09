@@ -1,0 +1,73 @@
+---
+name: Publish Charts
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  mongodb:
+    name: Publish mongodb chart
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+
+      - name: Get Previous tag
+        id: previous_tag
+        uses: WyriHaximus/github-action-get-previous-tag@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Chart.yaml version
+        run: |
+          # Utiliser yq si disponible, sinon sed
+          if command -v yq &>/dev/null; then
+            yq -i ".version = \"${{ steps.previoustag.outputs.tag }}\"" Chart.yaml
+          else
+            sed -i "s/^version:.*/version: ${{ steps.previoustag.outputs.tag }}/" Chart.yaml
+          fi
+          cat Chart.yaml
+
+      - name: Commit Chart.yaml
+        uses: github-actions-x/commit@v2.9
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          push-branch: main
+          commit-message: "chore: release ${{ steps.previoustag.outputs.tag }}"
+          force-add: "true"
+          files: Chart.yaml
+          name: CI
+          email: ${{ github.actor }}@users.noreply.github.com
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.19.1
+
+      - name: Generate default static install
+        run: |
+          helm template mongodb . -n mongodb > mongodb.yaml
+
+      - name: Publish Helm chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+          charts_dir: "../"
+          charts_url: "https://plopoyop.github.io/"
+          owner: plopoyop
+          repository: plopoyop.github.io
+          branch: main
+          target_dir: charts/mongodb-instance
+          index_dir: charts/
+          commit_username: plopoyop
+          commit_email: plopoyop@users.noreply.github.com

@@ -52,17 +52,6 @@ jobs:
           echo "Tag ${{ steps.version.outputs.next-version }} already exists, skipping release"
           exit 0
 
-      - name: Update Chart.yaml version
-        if: steps.tag_exists.outputs.exists != 'true'
-        run: |
-          # Utiliser yq si disponible, sinon sed
-          if command -v yq &>/dev/null; then
-            yq -i ".version = \"${{ steps.version.outputs.next-version }}\"" Chart.yaml
-          else
-            sed -i "s/^version:.*/version: ${{ steps.version.outputs.next-version }}/" Chart.yaml
-          fi
-          cat Chart.yaml
-
       - name: Generate changelog
         if: steps.tag_exists.outputs.exists != 'true'
         uses: janheinrichmerker/action-github-changelog-generator@v2.4
@@ -71,7 +60,7 @@ jobs:
           configureSections: '{"features": {"prefix":"## 🚀 New Features","labels":["feature", "enhancement", "improvements"]}, "bugs": {"prefix":"## 🐛 Bug Fixes","labels":["fix", "bug", "bugfix"]}, "tests": {"prefix":"## 🧪 Tests","labels":["test"]}, "documentation": {"prefix":"## 📖 Documentation Updates","labels":["docs", "documentation", "doc"]}, "dependency": {"prefix":"## ⚙️ Dependencies","labels":["dependency"]}}'
           futureRelease: ${{ steps.version.outputs.next-version }}
 
-      - name: Commit Chart.yaml and CHANGELOG.md
+      - name: Commit CHANGELOG.md
         if: steps.tag_exists.outputs.exists != 'true'
         uses: github-actions-x/commit@v2.9
         with:
@@ -79,7 +68,7 @@ jobs:
           push-branch: main
           commit-message: "chore: release ${{ steps.version.outputs.next-version }}"
           force-add: "true"
-          files: Chart.yaml CHANGELOG.md
+          files: CHANGELOG.md
           name: CI
           email: ${{ github.actor }}@users.noreply.github.com
 
@@ -90,17 +79,6 @@ jobs:
           git push origin "${{ steps.version.outputs.next-version }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup Helm
-        if: steps.tag_exists.outputs.exists != 'true'
-        uses: azure/setup-helm@v4
-        with:
-          version: v3.19.1
-
-      - name: Generate default static install
-        if: steps.tag_exists.outputs.exists != 'true'
-        run: |
-          helm template mongodb . -n mongodb > mongodb.yaml
 
       - name: Extract changelog for release body
         if: steps.tag_exists.outputs.exists != 'true'
@@ -118,22 +96,6 @@ jobs:
           tag: ${{ steps.version.outputs.next-version }}
           name: ${{ steps.version.outputs.next-version }}
           body: ${{ steps.changelog_body.outputs.body }}
-          prerelease: ${{ contains(steps.version.outputs.next-version, '-') }}
-          artifacts: mongodb.yaml
+          prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish Helm chart
-        if: steps.tag_exists.outputs.exists != 'true'
-        uses: stefanprodan/helm-gh-pages@master
-        with:
-          token: ${{ secrets.RELEASE_TOKEN }}
-          charts_dir: "../"
-          charts_url: "https://plopoyop.github.io/"
-          owner: plopoyop
-          repository: plopoyop.github.io
-          branch: main
-          target_dir: charts/mongodb-instance
-          index_dir: charts/
-          commit_username: plopoyop
-          commit_email: plopoyop@users.noreply.github.com
