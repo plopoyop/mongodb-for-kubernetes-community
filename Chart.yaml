@@ -9,5 +9,5 @@ keywords:
   - kubernetes
   - operator
 icon: https://mongodb-images-new.s3.eu-west-1.amazonaws.com/leaf-green-dark.png
-version: 0.1.1
+version: ""
 appVersion: "8.0.18"
