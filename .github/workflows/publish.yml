@@ -23,7 +23,7 @@ jobs:
           git config --global --add safe.directory $GITHUB_WORKSPACE
 
       - name: Get Previous tag
-        id: previous_tag
+        id: previoustag
         uses: WyriHaximus/github-action-get-previous-tag@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
