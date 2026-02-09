@@ -96,6 +96,6 @@ jobs:
           tag: ${{ steps.version.outputs.next-version }}
           name: ${{ steps.version.outputs.next-version }}
           body: ${{ steps.changelog_body.outputs.body }}
-          prerelease: true
+          draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
