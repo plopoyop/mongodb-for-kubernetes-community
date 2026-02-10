@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.3](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.3) (2026-02-10)
+
+[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.2...0.2.3)
+
+## 🐛 Bug Fixes
+
+- fix mongodb kubernetes role name [\#7](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/7) ([plopoyop](https://github.com/plopoyop))
+
 ## [0.2.2](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.2) (2026-02-09)
 
 [Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.1...0.2.2)
