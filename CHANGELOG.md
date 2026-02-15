@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.4](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.4) (2026-02-15)
+
+[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.3...0.2.4)
+
+**Merged pull requests:**
+
+- feat\(deps\): update prek \(0.2.30 → 0.3.0\) [\#8](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/8) ([plopoyop](https://github.com/plopoyop))
+
 ## [0.2.3](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.3) (2026-02-10)
 
 [Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.2...0.2.3)
