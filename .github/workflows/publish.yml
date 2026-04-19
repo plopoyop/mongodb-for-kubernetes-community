@@ -50,7 +50,7 @@ jobs:
           email: ${{ github.actor }}@users.noreply.github.com
 
       - name: Setup Helm
-        uses: azure/setup-helm@v4
+        uses: azure/setup-helm@v5
         with:
           version: v3.19.1
 
