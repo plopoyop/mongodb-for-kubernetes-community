@@ -13,7 +13,6 @@ spec:
 {{- if .Values.featureCompatibilityVersion }}
   featureCompatibilityVersion: "{{ .Values.featureCompatibilityVersion }}"
 {{- end }}
-  persistent: {{ .Values.persistent }}
   security:
     authentication:
       modes: ["SCRAM"]

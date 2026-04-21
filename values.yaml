@@ -1,7 +1,6 @@
 name: example-mongodb
 members: 3
 version: "8.0.18"
-persistent: true
 adminPassword: change-me
 user:
   name: admin

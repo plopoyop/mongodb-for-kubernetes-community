@@ -15,9 +15,6 @@ tests:
           path: spec.version
           value: "8.0.18"
       - equal:
-          path: spec.persistent
-          value: true
-      - equal:
           path: spec.users[0].name
           value: admin
       - equal:
