@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/HEAD)
+## [0.2.4](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.4) (2026-04-22)
 
-[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.4...HEAD)
+[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.3...0.2.4)
 
 ## 🐛 Bug Fixes
 
@@ -27,13 +27,6 @@
 - fix\(deps\): update prek \(0.3.4 → 0.3.5\) [\#14](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/14) ([plopoyop](https://github.com/plopoyop))
 - fix\(deps\): update prek \(0.3.0 → 0.3.4\) [\#12](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/12) ([plopoyop](https://github.com/plopoyop))
 - feat\(deps\): update git \(2.52.0 → 2.53.0\) [\#11](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/11) ([plopoyop](https://github.com/plopoyop))
-
-## [0.2.4](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.4) (2026-02-15)
-
-[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.3...0.2.4)
-
-**Merged pull requests:**
-
 - feat\(deps\): update prek \(0.2.30 → 0.3.0\) [\#8](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/8) ([plopoyop](https://github.com/plopoyop))
 
 ## [0.2.3](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.3) (2026-02-10)
