@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.5](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.5) (2026-04-26)
+
+[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.4...0.2.5)
+
+## ⚙️ Dependencies
+
+- fix\(ci\): update renovatebot/github-action action \(v46.1.9 → v46.1.10\) [\#24](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/24) ([plopoyop](https://github.com/plopoyop))
+
+**Merged pull requests:**
+
+- fix\(deps\): update prek \(0.3.8 → 0.3.9\) [\#25](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/25) ([plopoyop](https://github.com/plopoyop))
+
 ## [0.2.4](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.4) (2026-04-22)
 
 [Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.3...0.2.4)
