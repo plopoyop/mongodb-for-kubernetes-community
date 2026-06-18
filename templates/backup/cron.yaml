@@ -72,9 +72,9 @@ spec:
                     name: {{ .Values.connectionStringSecretName | quote }}
                     key: password
               - name: HOST
-                value: {{ .Values.name }}-svc.{{ .Release.Namespace }}.svc.cluster.local
+                value: {{ include "mongodb.fullname" . }}-svc.{{ .Release.Namespace }}.svc.cluster.local
               - name: REPLICATSET
-                value: {{ .Values.name }}
+                value: {{ include "mongodb.fullname" . }}
               - name: PORT
                 value: "27017"
               - name: STORAGE_PATH
