@@ -83,7 +83,7 @@ tests:
           value: "connection-string-secret"
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[2].value
-          value: "example-mongodb-svc.NAMESPACE.svc.cluster.local"
+          value: "RELEASE-NAME-mongodb-instance-svc.NAMESPACE.svc.cluster.local"
       - equal:
           path: spec.jobTemplate.spec.template.spec.containers[0].env[5].value
           value: "/backup"
