@@ -1,15 +1,29 @@
 # Changelog
 
-## [0.2.5](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.5) (2026-04-26)
+## [0.2.5](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.5) (2026-06-19)
 
 [Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.4...0.2.5)
 
+## 🐛 Bug Fixes
+
+- Fix Cronjob release name [\#36](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/36) ([plopoyop](https://github.com/plopoyop))
+
 ## ⚙️ Dependencies
 
+- fix\(ci\): update renovatebot/github-action action \(v46.1.14 → v46.1.15\) [\#35](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/35) ([plopoyop](https://github.com/plopoyop))
+- feat\(ci\)!: Update helm \(v3.21.0 → v4.2.0\) [\#34](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/34) ([plopoyop](https://github.com/plopoyop))
+- feat\(ci\): update helm \(v3.19.1 → v3.21.0\) [\#33](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/33) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.1.13 → v46.1.14\) [\#30](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/30) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.1.12 → v46.1.13\) [\#28](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/28) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.1.10 → v46.1.12\) [\#26](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/26) ([plopoyop](https://github.com/plopoyop))
 - fix\(ci\): update renovatebot/github-action action \(v46.1.9 → v46.1.10\) [\#24](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/24) ([plopoyop](https://github.com/plopoyop))
 
 **Merged pull requests:**
 
+- feat\(deps\): update git \(2.53.0 → 2.54.0\) [\#32](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/32) ([plopoyop](https://github.com/plopoyop))
+- feat\(deps\): update kubernetes-helm \(3.19.1 → 3.20.2\) [\#31](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/31) ([plopoyop](https://github.com/plopoyop))
+- fix\(deps\): update prek \(0.3.10 → 0.3.11\) [\#29](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/29) ([plopoyop](https://github.com/plopoyop))
+- fix\(deps\): update prek \(0.3.9 → 0.3.10\) [\#27](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/27) ([plopoyop](https://github.com/plopoyop))
 - fix\(deps\): update prek \(0.3.8 → 0.3.9\) [\#25](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/25) ([plopoyop](https://github.com/plopoyop))
 
 ## [0.2.4](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.4) (2026-04-22)
