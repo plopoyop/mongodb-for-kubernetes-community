@@ -1,0 +1,87 @@
+---
+suite: TLS cert-manager integration
+set:
+  adminPassword: "s3cure-pass"
+tests:
+  - it: should not render a Certificate by default
+    template: certificate.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should not render a Certificate when tls enabled but certManager disabled
+    template: certificate.yaml
+    set:
+      tls:
+        enabled: true
+        certificateKeySecretRef:
+          name: "tls-cert-secret"
+        caConfigMapRef:
+          name: "tls-ca-configmap"
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should render a cert-manager Certificate when enabled
+    template: certificate.yaml
+    set:
+      tls:
+        enabled: true
+        certManager:
+          enabled: true
+          issuerRef:
+            name: "my-ca-issuer"
+            kind: "ClusterIssuer"
+    asserts:
+      - isKind:
+          of: Certificate
+      - equal:
+          path: metadata.name
+          value: "RELEASE-NAME-mongodb-instance-tls"
+      - equal:
+          path: spec.secretName
+          value: "RELEASE-NAME-mongodb-instance-tls"
+      - equal:
+          path: spec.issuerRef.name
+          value: "my-ca-issuer"
+      - equal:
+          path: spec.issuerRef.kind
+          value: "ClusterIssuer"
+      - equal:
+          path: spec.dnsNames[0]
+          value: "*.RELEASE-NAME-mongodb-instance-svc.NAMESPACE.svc.cluster.local"
+
+  - it: should honor a custom certificateKeySecretRef as the secret name
+    template: certificate.yaml
+    set:
+      tls:
+        enabled: true
+        certificateKeySecretRef:
+          name: "custom-tls"
+        certManager:
+          enabled: true
+          issuerRef:
+            name: "my-ca-issuer"
+    asserts:
+      - equal:
+          path: spec.secretName
+          value: "custom-tls"
+
+  - it: should auto-wire the MongoDBCommunity tls refs to the generated secret
+    template: mongodb.yaml
+    set:
+      tls:
+        enabled: true
+        certManager:
+          enabled: true
+          issuerRef:
+            name: "my-ca-issuer"
+    asserts:
+      - equal:
+          path: spec.security.tls.certificateKeySecretRef.name
+          value: "RELEASE-NAME-mongodb-instance-tls"
+      - equal:
+          path: spec.security.tls.caCertificateSecretRef.name
+          value: "RELEASE-NAME-mongodb-instance-tls"
+      - notExists:
+          path: spec.security.tls.caConfigMapRef
