@@ -6,6 +6,8 @@ templates:
   - role.yaml
   - secrets.yaml
   - serviceaccount.yaml
+set:
+  adminPassword: "s3cure-pass"
 tests:
   - it: "should contains labels metadata"
     asserts:

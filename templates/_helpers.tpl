@@ -51,6 +51,19 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Fail the render if adminPassword is empty or still the default placeholder.
+Only enforced on install/upgrade so that "helm lint" (which renders with the
+default values and where IsInstall/IsUpgrade are false) stays clean.
+*/}}
+{{- define "mongodb.validateAdminPassword" -}}
+{{- if or .Release.IsInstall .Release.IsUpgrade -}}
+{{- if or (empty .Values.adminPassword) (eq .Values.adminPassword "change-me") -}}
+{{- fail "adminPassword must be changed from its default value \"change-me\". Set a strong adminPassword (e.g. --set adminPassword=<strong-password> or in your values file) before installing." -}}
+{{- end -}}
+{{- end -}}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "mongodb.serviceAccountName" -}}

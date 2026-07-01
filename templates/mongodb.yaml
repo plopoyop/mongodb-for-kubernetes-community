@@ -1,3 +1,4 @@
+{{- include "mongodb.validateAdminPassword" . -}}
 {{- $fullName := include "mongodb.fullname" . -}}
 ---
 apiVersion: mongodbcommunity.mongodb.com/v1

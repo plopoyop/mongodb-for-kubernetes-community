@@ -1,5 +1,7 @@
 ---
 suite: Backups configurations
+set:
+  adminPassword: "s3cure-pass"
 tests:
   - it: should not render the CronJob when backup is disabled
     set:

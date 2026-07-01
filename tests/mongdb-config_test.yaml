@@ -2,6 +2,8 @@
 suite: Mongodb replicat configuration
 templates:
   - mongodb.yaml
+set:
+  adminPassword: "s3cure-pass"
 tests:
   - it: should provide expected defaults
     asserts:
