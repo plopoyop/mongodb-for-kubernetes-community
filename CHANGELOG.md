@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.4.0) (2026-07-01)
+
+[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.3.1...0.4.0)
+
+## 🚀 New Features
+
+- Create additionnal users [\#41](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/41) ([plopoyop](https://github.com/plopoyop))
+
 ## [0.3.1](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.3.1) (2026-07-01)
 
 [Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.3.0...0.3.1)
