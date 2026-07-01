@@ -6,6 +6,7 @@
 
 ## 🚀 New Features
 
+- Create certificate and enable TLS encryption [\#42](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/42) ([plopoyop](https://github.com/plopoyop))
 - Create additionnal users [\#41](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/41) ([plopoyop](https://github.com/plopoyop))
 
 ## [0.3.1](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.3.1) (2026-07-01)
