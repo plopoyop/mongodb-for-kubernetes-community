@@ -56,7 +56,7 @@ jobs:
 
       - name: Generate default static install
         run: |
-          helm template mongodb . -n mongodb > mongodb.yaml
+          helm template mongodb . -n mongodb --set adminPassword=CHANGE_ME_BEFORE_INSTALL > mongodb.yaml
 
       - name: Publish Helm chart
         uses: stefanprodan/helm-gh-pages@master
