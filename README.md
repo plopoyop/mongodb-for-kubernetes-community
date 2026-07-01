@@ -75,6 +75,17 @@ dataVolumeStorage: "10Gi"
 logVolumeStorage: "2Gi"
 ```
 
+### 🔐 Admin Password
+
+The `adminPassword` value **must** be changed from its default placeholder `change-me`.
+If it is left as `change-me` (or empty), the chart refuses to render and `helm install`,
+`helm upgrade` and `helm template` fail with an actionable error message. Set a strong
+value before installing:
+
+```sh
+helm install my-mongodb plopoyop/mongodb-instance --set adminPassword=<strong-password>
+```
+
 ### ⚠️ Service Account
 
 Service account name is hardcoded as `mongodb-kubernetes-appdb` in community operator. If you intend to deploy multiple replicasets in the same namespace, make sure to disable service account creation for the second deployment. Otherwise, Helm will report an ownership conflict.
