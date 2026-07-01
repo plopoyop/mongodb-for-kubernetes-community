@@ -86,6 +86,34 @@ value before installing:
 helm install my-mongodb plopoyop/mongodb-instance --set adminPassword=<strong-password>
 ```
 
+### additionalUsers
+
+By default the chart creates a single primary user from the `user` block. To create
+additional MongoDB users, add entries to the `additionalUsers` list. For each entry a
+dedicated Opaque Secret holding the user's password is created automatically.
+
+The secret name is computed by the `mongodb.userSecretName` helper: it uses
+`<release-fullname>-<passwordSecretRef>` when `passwordSecretRef` is set, otherwise it
+falls back to `<release-fullname>-<name>-password`. `passwordSecretRef` is therefore
+optional.
+
+```yaml
+# default
+additionalUsers: []
+
+# example
+additionalUsers:
+  - name: "app-user"
+    db: "myapp"
+    password: "a-strong-password"
+    # passwordSecretRef is optional; defaults to "<name>-password"
+    roles:
+      - name: "readWrite"
+        db: "myapp"
+    scramCredentialsSecretName: ""
+    connectionStringSecretName: ""
+```
+
 ### ⚠️ Service Account
 
 Service account name is hardcoded as `mongodb-kubernetes-appdb` in community operator. If you intend to deploy multiple replicasets in the same namespace, make sure to disable service account creation for the second deployment. Otherwise, Helm will report an ownership conflict.
