@@ -1,0 +1,20 @@
+{{- if and .Values.tls.enabled .Values.tls.certManager.enabled }}
+{{- $dns := printf "*.%s-svc.%s.svc.cluster.local" (include "mongodb.fullname" .) .Release.Namespace }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "mongodb.fullname" . }}-tls
+  labels:
+  {{- include "mongodb.labels" . | nindent 4 }}
+spec:
+  secretName: {{ include "mongodb.tlsCertSecretName" . }}
+  issuerRef:
+    name: {{ required "tls.certManager.issuerRef.name is required when tls.certManager.enabled" .Values.tls.certManager.issuerRef.name }}
+    kind: {{ .Values.tls.certManager.issuerRef.kind }}
+  duration: {{ .Values.tls.certManager.duration }}
+  renewBefore: {{ .Values.tls.certManager.renewBefore }}
+  commonName: {{ $dns | quote }}
+  dnsNames:
+    - {{ $dns | quote }}
+{{- end }}

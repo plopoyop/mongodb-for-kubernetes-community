@@ -29,6 +29,26 @@ additionalUsers: []
 #   scramCredentialsSecretName: ""
 #   connectionStringSecretName: ""
 
+tls:
+  enabled: false
+  optional: false
+  # When certManager.enabled is true the chart creates a cert-manager Certificate
+  # that generates the TLS secret; certificateKeySecretRef/caCertificateSecretRef
+  # then default to that secret and no manual resource is required.
+  certManager:
+    enabled: false
+    issuerRef:
+      name: ""
+      kind: "ClusterIssuer"
+    duration: "8760h"
+    renewBefore: "720h"
+  certificateKeySecretRef:
+    name: ""
+  caConfigMapRef:
+    name: ""
+  caCertificateSecretRef:
+    name: ""
+
 serviceAccount:
   create: true
   automount: true

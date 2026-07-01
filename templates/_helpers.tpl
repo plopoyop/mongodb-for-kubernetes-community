@@ -34,6 +34,18 @@ Call with: (dict "root" $ "user" <user>)
 {{- end }}
 
 {{/*
+Name of the TLS certificate secret. Uses certificateKeySecretRef.name when set,
+otherwise "<fullname>-tls" when cert-manager generation is enabled.
+*/}}
+{{- define "mongodb.tlsCertSecretName" -}}
+{{- if .Values.tls.certificateKeySecretRef.name -}}
+{{- .Values.tls.certificateKeySecretRef.name -}}
+{{- else if .Values.tls.certManager.enabled -}}
+{{- printf "%s-tls" (include "mongodb.fullname" .) -}}
+{{- end -}}
+{{- end }}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "mongodb.chart" -}}

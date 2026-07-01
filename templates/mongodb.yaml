@@ -17,6 +17,28 @@ spec:
   security:
     authentication:
       modes: ["SCRAM"]
+{{- if .Values.tls.enabled }}
+    tls:
+      enabled: true
+{{- if .Values.tls.optional }}
+      optional: true
+{{- end }}
+{{- $certSecret := include "mongodb.tlsCertSecretName" . }}
+{{- if $certSecret }}
+      certificateKeySecretRef:
+        name: "{{ $certSecret }}"
+{{- end }}
+{{- if .Values.tls.caConfigMapRef.name }}
+      caConfigMapRef:
+        name: "{{ .Values.tls.caConfigMapRef.name }}"
+{{- else if .Values.tls.caCertificateSecretRef.name }}
+      caCertificateSecretRef:
+        name: "{{ .Values.tls.caCertificateSecretRef.name }}"
+{{- else if .Values.tls.certManager.enabled }}
+      caCertificateSecretRef:
+        name: "{{ $certSecret }}"
+{{- end }}
+{{- end }}
 
   statefulSet:
     spec:

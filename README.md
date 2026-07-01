@@ -123,6 +123,64 @@ serviceAccount:
   create: false
 ```
 
+### TLS / Encryption
+
+You can enable TLS encryption for connections to the MongoDB cluster. This requires [cert-manager](https://cert-manager.io/) (or a pre-created certificate `Secret` and CA `ConfigMap`) to provide the certificates out-of-band. The operator references them and sets the connection `ssl` option to `true` when TLS is enabled.
+
+Provide a `Secret` holding `tls.crt` + `tls.key` via `certificateKeySecretRef`, and the CA certificate via either `caConfigMapRef` (a `ConfigMap`) or `caCertificateSecretRef` (a `Secret` holding `ca.crt`).
+
+```yaml
+# default (disabled)
+tls:
+  enabled: false
+  optional: false
+  certificateKeySecretRef:
+    name: ""
+  caConfigMapRef:
+    name: ""
+  caCertificateSecretRef:
+    name: ""
+
+# example value:
+tls:
+  enabled: true
+  # optional: true allows both TLS and non-TLS connections
+  optional: false
+  certificateKeySecretRef:
+    name: "tls-secret-name"
+  caConfigMapRef:
+    name: "tls-ca-configmap-name"
+  # Alternative to caConfigMapRef, a Secret holding ca.crt:
+  # caCertificateSecretRef:
+  #   name: "tls-ca-secret-name"
+```
+
+#### Automatic certificate generation with cert-manager
+
+cert-manager does **not** create a certificate on its own — it only issues one when a
+`Certificate` resource pointing to an `Issuer`/`ClusterIssuer` exists. Enable
+`tls.certManager.enabled` to let the chart create that `Certificate` for you. The chart
+then generates a `Secret` named `<release-fullname>-tls` and automatically wires both
+`certificateKeySecretRef` and `caCertificateSecretRef` to it, so `helm install` is enough
+— no manual resource required. You only need an existing `Issuer`/`ClusterIssuer`.
+
+```yaml
+tls:
+  enabled: true
+  certManager:
+    enabled: true
+    issuerRef:
+      name: "my-ca-issuer"   # required: an existing Issuer/ClusterIssuer
+      kind: "ClusterIssuer"  # or "Issuer"
+    duration: "8760h"        # 365 days
+    renewBefore: "720h"      # 30 days
+```
+
+The generated certificate covers `*.<release-fullname>-svc.<namespace>.svc.cluster.local`.
+Setting `certificateKeySecretRef.name` overrides the default secret name.
+
+[Official documentation](https://github.com/mongodb/mongodb-kubernetes/blob/master/docs/mongodbcommunity/secure.md) on securing MongoDBCommunity resources.
+
 ### additionalMongodConfig
 
 Additional configuration that can be passed to each data-bearing mongod at runtime

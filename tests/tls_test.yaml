@@ -1,0 +1,61 @@
+---
+suite: TLS encryption configuration
+templates:
+  - mongodb.yaml
+set:
+  adminPassword: "s3cure-pass"
+tests:
+  - it: should not render tls block by default
+    asserts:
+      - notExists:
+          path: spec.security.tls
+
+  - it: should render tls with certificateKeySecretRef and caConfigMapRef
+    set:
+      tls:
+        enabled: true
+        certificateKeySecretRef:
+          name: "tls-cert-secret"
+        caConfigMapRef:
+          name: "tls-ca-configmap"
+    asserts:
+      - equal:
+          path: spec.security.tls.enabled
+          value: true
+      - equal:
+          path: spec.security.tls.certificateKeySecretRef.name
+          value: "tls-cert-secret"
+      - equal:
+          path: spec.security.tls.caConfigMapRef.name
+          value: "tls-ca-configmap"
+      - notExists:
+          path: spec.security.tls.caCertificateSecretRef
+
+  - it: should render optional when set to true
+    set:
+      tls:
+        enabled: true
+        optional: true
+        certificateKeySecretRef:
+          name: "tls-cert-secret"
+        caConfigMapRef:
+          name: "tls-ca-configmap"
+    asserts:
+      - equal:
+          path: spec.security.tls.optional
+          value: true
+
+  - it: should render caCertificateSecretRef when caConfigMapRef is not set
+    set:
+      tls:
+        enabled: true
+        certificateKeySecretRef:
+          name: "tls-cert-secret"
+        caCertificateSecretRef:
+          name: "tls-ca-secret"
+    asserts:
+      - equal:
+          path: spec.security.tls.caCertificateSecretRef.name
+          value: "tls-ca-secret"
+      - notExists:
+          path: spec.security.tls.caConfigMapRef
