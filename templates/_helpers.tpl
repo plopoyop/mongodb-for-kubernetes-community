@@ -24,6 +24,16 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
+Password secret name for a user. Honors passwordSecretRef when set,
+otherwise derives it from the user name as "<name>-password".
+Call with: (dict "root" $ "user" <user>)
+*/}}
+{{- define "mongodb.userSecretName" -}}
+{{- $suffix := .user.passwordSecretRef | default (printf "%s-password" .user.name) -}}
+{{- printf "%s-%s" (include "mongodb.fullname" .root) $suffix -}}
+{{- end }}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "mongodb.chart" -}}

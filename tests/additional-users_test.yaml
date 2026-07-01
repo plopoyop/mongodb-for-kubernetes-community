@@ -1,0 +1,158 @@
+---
+suite: Additional users configuration
+templates:
+  - mongodb.yaml
+  - secrets.yaml
+set:
+  adminPassword: "s3cure-pass"
+tests:
+  - it: should only render the primary user when additionalUsers is unset
+    template: mongodb.yaml
+    asserts:
+      - equal:
+          path: spec.users[0].name
+          value: admin
+      - lengthEqual:
+          path: spec.users
+          count: 1
+
+  - it: should only render the primary secret when additionalUsers is unset
+    template: secrets.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+
+  - it: should append additional users to spec.users
+    template: mongodb.yaml
+    set:
+      additionalUsers:
+        - name: "app-user"
+          db: "myapp"
+          password: "app-pass"
+          passwordSecretRef: "app-user-password"
+          roles:
+            - name: "readWrite"
+              db: "myapp"
+        - name: "report-user"
+          db: "reports"
+          password: "report-pass"
+          passwordSecretRef: "report-user-password"
+          roles:
+            - name: "read"
+              db: "reports"
+    asserts:
+      - lengthEqual:
+          path: spec.users
+          count: 3
+      - equal:
+          path: spec.users[0].name
+          value: admin
+      - equal:
+          path: spec.users[1].name
+          value: "app-user"
+      - equal:
+          path: spec.users[1].db
+          value: "myapp"
+      - equal:
+          path: spec.users[1].passwordSecretRef.name
+          value: "RELEASE-NAME-mongodb-instance-app-user-password"
+      - equal:
+          path: spec.users[1].roles
+          value:
+            - {name: "readWrite", db: "myapp"}
+      - equal:
+          path: spec.users[2].name
+          value: "report-user"
+      - equal:
+          path: spec.users[2].db
+          value: "reports"
+      - equal:
+          path: spec.users[2].passwordSecretRef.name
+          value: "RELEASE-NAME-mongodb-instance-report-user-password"
+      - equal:
+          path: spec.users[2].roles
+          value:
+            - {name: "read", db: "reports"}
+
+  - it: should derive the secret name from the user name when passwordSecretRef is omitted
+    set:
+      additionalUsers:
+        - name: "app-user"
+          db: "myapp"
+          password: "app-pass"
+          roles:
+            - name: "readWrite"
+              db: "myapp"
+    asserts:
+      - equal:
+          path: spec.users[1].passwordSecretRef.name
+          value: "RELEASE-NAME-mongodb-instance-app-user-password"
+        template: mongodb.yaml
+      - equal:
+          path: metadata.name
+          value: "RELEASE-NAME-mongodb-instance-app-user-password"
+        template: secrets.yaml
+        documentIndex: 1
+
+  - it: should render optional scram and connection string fields for additional users
+    template: mongodb.yaml
+    set:
+      additionalUsers:
+        - name: "app-user"
+          db: "myapp"
+          password: "app-pass"
+          passwordSecretRef: "app-user-password"
+          roles:
+            - name: "readWrite"
+              db: "myapp"
+          scramCredentialsSecretName: "app-scram"
+          connectionStringSecretName: "app-connstring"
+    asserts:
+      - equal:
+          path: spec.users[1].scramCredentialsSecretName
+          value: "app-scram"
+      - equal:
+          path: spec.users[1].connectionStringSecretName
+          value: "app-connstring"
+
+  - it: should create one secret per additional user after existing documents
+    template: secrets.yaml
+    set:
+      additionalUsers:
+        - name: "app-user"
+          db: "myapp"
+          password: "app-pass"
+          passwordSecretRef: "app-user-password"
+          roles:
+            - name: "readWrite"
+              db: "myapp"
+        - name: "report-user"
+          db: "reports"
+          password: "report-pass"
+          passwordSecretRef: "report-user-password"
+          roles:
+            - name: "read"
+              db: "reports"
+    asserts:
+      - hasDocuments:
+          count: 3
+      - equal:
+          path: metadata.name
+          value: "RELEASE-NAME-mongodb-instance-mongo-admin-password"
+        documentIndex: 0
+      - equal:
+          path: metadata.name
+          value: "RELEASE-NAME-mongodb-instance-app-user-password"
+        documentIndex: 1
+      - equal:
+          path: stringData.password
+          value: "app-pass"
+        documentIndex: 1
+      - equal:
+          path: metadata.name
+          value: "RELEASE-NAME-mongodb-instance-report-user-password"
+        documentIndex: 2
+      - equal:
+          path: stringData.password
+          value: "report-pass"
+        documentIndex: 2

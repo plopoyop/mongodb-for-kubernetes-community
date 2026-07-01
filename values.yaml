@@ -18,6 +18,17 @@ user:
 scramCredentialsSecretName: ""
 connectionStringSecretName: ""
 
+additionalUsers: []
+# passwordSecretRef is optional: when omitted the secret name defaults to "<name>-password"
+# - name: "app-user"
+#   db: "myapp"
+#   password: "a-strong-password"
+#   roles:
+#     - name: "readWrite"
+#       db: "myapp"
+#   scramCredentialsSecretName: ""
+#   connectionStringSecretName: ""
+
 serviceAccount:
   create: true
   automount: true
