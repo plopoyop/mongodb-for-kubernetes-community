@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.3.0) (2026-07-01)
+
+[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.6...0.3.0)
+
+## 🚀 New Features
+
+- Prevent install when admin password is not changed [\#40](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/40) ([plopoyop](https://github.com/plopoyop))
+
+## ⚙️ Dependencies
+
+- feat\(ci\)!: Update actions/checkout action \(v6.0.3 → v7.0.0\) [\#38](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/38) ([plopoyop](https://github.com/plopoyop))
+
 ## [0.2.6](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.2.6) (2026-06-28)
 
 [Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.2.5...0.2.6)
