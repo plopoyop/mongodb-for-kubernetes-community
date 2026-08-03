@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.5.0](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.5.0) (2026-08-03)
+
+[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.4.1...0.5.0)
+
+## 🚀 New Features
+
+- Add initContainer additionnal config [\#51](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/51) ([plopoyop](https://github.com/plopoyop))
+
+## ⚙️ Dependencies
+
+- feat\(ci\): update renovatebot/github-action action \(v46.1.20 → v46.2.0\) [\#50](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/50) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.1.19 → v46.1.20\) [\#48](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/48) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.1.18 → v46.1.19\) [\#46](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/46) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.1.17 → v46.1.18\) [\#45](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/45) ([plopoyop](https://github.com/plopoyop))
+
+**Merged pull requests:**
+
+- feat\(deps\): update git \(2.54.0 → 2.55.0\) [\#49](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/49) ([plopoyop](https://github.com/plopoyop))
+- feat\(deps\): update prek \(0.3.11 → 0.4.4\) [\#47](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/47) ([plopoyop](https://github.com/plopoyop))
+
 ## [0.4.1](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.4.1) (2026-07-05)
 
 [Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.4.0...0.4.1)
