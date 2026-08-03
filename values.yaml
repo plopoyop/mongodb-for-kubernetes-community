@@ -63,6 +63,10 @@ containersAdditionalConfig: {}
 
 metrics:
   enabled: false
+  username: "prometheus"
+  # password is required when metrics.enabled is true
+  password: ""
+  passwordSecretRef: "metrics-password"
 
 backup:
   enabled: false
