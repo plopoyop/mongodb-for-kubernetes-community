@@ -50,7 +50,7 @@ Below are some key values from `values.yaml`:
 ```yaml
 name: example-mongodb
 members: 3
-version: "8.0.18"
+version: "8.0.28"
 persistent: true
 adminPassword: change-me
 
@@ -333,7 +333,7 @@ apiVersion: v2
 name: mongodb-instance
 description: Deploy and manage a MongoDB ReplicaSet on Kubernetes using the MongoDB Kubernetes Operator
 version: "0.1.0"
-appVersion: "8.0.18"
+appVersion: "8.0.28"
 ```
 
 ## 🚀 Upgrade
