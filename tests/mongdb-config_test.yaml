@@ -15,7 +15,12 @@ tests:
           value: "ReplicaSet"
       - equal:
           path: spec.version
-          value: "8.0.18"
+          # renovate: datasource=docker depName=mongodb/mongodb-community-server
+          value: "8.0.28"
+      - notExists:
+          path: spec.additionalConnectionStringConfig
+      - notExists:
+          path: spec.prometheus
       - equal:
           path: spec.users[0].name
           value: admin
@@ -245,3 +250,24 @@ tests:
       - equal:
           path: spec.prometheus.passwordSecretRef.name
           value: "RELEASE-NAME-mongodb-instance-passSecretRef"
+
+  - it: should apply metrics defaults if enabled without overrides
+    set:
+      metrics:
+        enabled: true
+    asserts:
+      - equal:
+          path: spec.prometheus.username
+          value: "prometheus"
+      - equal:
+          path: spec.prometheus.passwordSecretRef.name
+          value: "RELEASE-NAME-mongodb-instance-metrics-password"
+
+  - it: should fail when metrics is enabled without username
+    set:
+      metrics:
+        enabled: true
+        username: ""
+    asserts:
+      - failedTemplate:
+          errorMessage: "metrics.username is required when metrics.enabled"

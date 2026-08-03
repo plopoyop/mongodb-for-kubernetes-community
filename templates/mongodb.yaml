@@ -111,16 +111,16 @@ spec:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 
+{{- with .Values.additionalConnectionStringConfig }}
   additionalConnectionStringConfig:
-    {{- with .Values.additionalConnectionStringConfig }}
     {{- toYaml . | nindent 4 }}
-    {{- end }}
+{{- end }}
 
 {{- if .Values.metrics.enabled -}}
 {{- with .Values.metrics }}
   prometheus:
-    username: {{ .username }}
+    username: {{ required "metrics.username is required when metrics.enabled" .username | quote }}
     passwordSecretRef:
-      name: "{{ $fullName }}-{{ .passwordSecretRef }}"
+      name: "{{ $fullName }}-{{ required "metrics.passwordSecretRef is required when metrics.enabled" .passwordSecretRef }}"
 {{- end }}
 {{- end }}

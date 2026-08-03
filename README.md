@@ -4,7 +4,7 @@ This repository contains a Helm chart for deploying MongoDB ReplicaSet on Kubern
 
 ## 📌 General Information
 
-- **MongoDB Kubernetes Operator**: [MongoDB For Kubernetes](https://github.com/mongodb/mongodb-kubernetes)
+- **MongoDB Kubernetes Operator**: [MongoDB For Kubernetes](https://github.com/mongodb/mongodb-kubernetes) — validated against MCK `1.10.0` (CRD `mongodbcommunity.mongodb.com/v1`)
 - **Git Repository**: [mongodb-for-kubernetes-community](https://github.com/plopoyop/mongodb-for-kubernetes-community)
 - **Helm Repository**: [https://plopoyop.github.io/charts/](https://plopoyop.github.io/charts/)
 - **Maintainer**: [plopoyop](https://github.com/plopoyop)
@@ -50,7 +50,7 @@ Below are some key values from `values.yaml`:
 ```yaml
 name: example-mongodb
 members: 3
-version: "8.0.18"
+version: "8.0.28"
 persistent: true
 adminPassword: change-me
 
@@ -364,8 +364,20 @@ apiVersion: v2
 name: mongodb-instance
 description: Deploy and manage a MongoDB ReplicaSet on Kubernetes using the MongoDB Kubernetes Operator
 version: "0.1.0"
-appVersion: "8.0.18"
+appVersion: "8.0.28"
 ```
+
+### MongoDB version updates
+
+The MongoDB server version is tracked by Renovate against the image the MCK community
+reconciler pulls, `quay.io/mongodb/mongodb-community-server:<version>-ubi8`. A single PR
+bumps `values.yaml`, the `appVersion` in `Chart.yaml`, the snippets in this README and the
+default-values unit test.
+
+Patch releases inside the current release series (`8.0.x`) are automerged after three days
+once the unit tests pass. Minor and major bumps (`8.0` → `8.2`) are left for manual review,
+because changing the release series requires deciding on `featureCompatibilityVersion`
+first.
 
 ## 🚀 Upgrade
 
