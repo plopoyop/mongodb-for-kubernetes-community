@@ -60,6 +60,7 @@ logVolumeStorage: "2Gi"
 additionalMongodConfig: {}
 additionalConnectionStringConfig: {}
 containersAdditionalConfig: {}
+initContainersAdditionalConfig: {}
 
 metrics:
   enabled: false
