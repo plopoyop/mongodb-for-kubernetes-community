@@ -6,6 +6,7 @@
 
 ## 🚀 New Features
 
+- Multiple enhancements [\#52](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/52) ([plopoyop](https://github.com/plopoyop))
 - Add initContainer additionnal config [\#51](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/51) ([plopoyop](https://github.com/plopoyop))
 
 ## ⚙️ Dependencies
