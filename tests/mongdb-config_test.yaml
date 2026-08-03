@@ -16,6 +16,8 @@ tests:
       - equal:
           path: spec.version
           value: "8.0.28"
+      - notExists:
+          path: spec.additionalConnectionStringConfig
       - equal:
           path: spec.users[0].name
           value: admin

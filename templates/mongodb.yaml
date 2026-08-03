@@ -107,10 +107,10 @@ spec:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 
+{{- with .Values.additionalConnectionStringConfig }}
   additionalConnectionStringConfig:
-    {{- with .Values.additionalConnectionStringConfig }}
     {{- toYaml . | nindent 4 }}
-    {{- end }}
+{{- end }}
 
 {{- if .Values.metrics.enabled -}}
 {{- with .Values.metrics }}
