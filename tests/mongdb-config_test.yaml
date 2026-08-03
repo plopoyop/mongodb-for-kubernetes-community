@@ -15,6 +15,7 @@ tests:
           value: "ReplicaSet"
       - equal:
           path: spec.version
+          # renovate: datasource=docker depName=mongodb/mongodb-community-server
           value: "8.0.28"
       - notExists:
           path: spec.additionalConnectionStringConfig

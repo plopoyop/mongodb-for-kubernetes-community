@@ -3,5 +3,68 @@
   "extends": [
     "github>plopoyop/renovate-config",
     "github>plopoyop/renovate-config:automerge-devbox"
+  ],
+  "packageRules": [
+    {
+      "description": "The MCK community reconciler pulls quay.io/mongodb/mongodb-community-server:<version>-ubi8, so only track versions published with that suffix",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["mongodb/mongodb-community-server"],
+      "registryUrls": ["https://quay.io"],
+      "versioning": "semver",
+      "extractVersion": "^(?<version>\\d+\\.\\d+\\.\\d+)-ubi8$"
+    },
+    {
+      "description": "Automerge MongoDB patch releases inside the current release series once the unit tests pass",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["mongodb/mongodb-community-server"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "A MongoDB minor or major bump changes the release series (8.0 -> 8.2), which needs a manual featureCompatibilityVersion review",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["mongodb/mongodb-community-server"],
+      "matchUpdateTypes": ["minor", "major"],
+      "automerge": false
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "MongoDB server version exposed as the chart appVersion",
+      "managerFilePatterns": ["/^Chart.yaml$/"],
+      "matchStrings": ["(?m)^appVersion: \"(?<currentValue>\\d+\\.\\d+\\.\\d+)\"$"],
+      "depNameTemplate": "mongodb/mongodb-community-server",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "MongoDB server version rendered into spec.version of the MongoDBCommunity resource",
+      "managerFilePatterns": ["/^values.yaml$/"],
+      "matchStrings": ["(?m)^version: \"(?<currentValue>\\d+\\.\\d+\\.\\d+)\"$"],
+      "depNameTemplate": "mongodb/mongodb-community-server",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "MongoDB server version in the documented values and Chart.yaml snippets",
+      "managerFilePatterns": ["/^README.md$/"],
+      "matchStrings": [
+        "members: 3\\nversion: \"(?<currentValue>\\d+\\.\\d+\\.\\d+)\"",
+        "(?m)^appVersion: \"(?<currentValue>\\d+\\.\\d+\\.\\d+)\"$"
+      ],
+      "depNameTemplate": "mongodb/mongodb-community-server",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "MongoDB server version asserted by the default-values unit test",
+      "managerFilePatterns": ["/^tests/mongdb-config_test.yaml$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>\\S+)\\s+value: \"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
+      ]
+    }
   ]
 }
