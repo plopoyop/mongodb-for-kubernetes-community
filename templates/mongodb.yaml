@@ -58,11 +58,15 @@ spec:
               requests:
                 storage: {{ .Values.logVolumeStorage }}
 
-{{- if not (empty .Values.containersAdditionalConfig) }}
+{{- if or (not (empty .Values.containersAdditionalConfig)) (not (empty .Values.initContainersAdditionalConfig)) }}
       template:
         spec:
-          containers:
 {{- with .Values.containersAdditionalConfig }}
+          containers:
+{{- toYaml . | nindent 12 }}
+{{- end }}
+{{- with .Values.initContainersAdditionalConfig }}
+          initContainers:
 {{- toYaml . | nindent 12 }}
 {{- end }}
 {{- end }}

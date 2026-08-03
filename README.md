@@ -238,6 +238,37 @@ containersAdditionalConfig:
       timeout: 60
 ```
 
+### initContainersAdditionalConfig
+
+Override the init containers injected by the operator (`mongod-posthook`,
+`mongodb-agent-readinessprobe`).
+
+This matters for scheduling: Kubernetes computes a pod's effective request as
+`max(largest init container request, sum of the app container requests)`. The
+operator's init containers request 500m CPU by default, so a pod whose `mongod`
+and `mongodb-agent` only ask for 300m still reserves 500m on its node for its
+whole lifetime, even though those init containers run for a few seconds.
+
+```yaml
+# default
+initContainersAdditionalConfig: {}
+
+# example
+initContainersAdditionalConfig:
+  - name: mongod-posthook
+    resources:
+      limits:
+        cpu: "100m"
+        memory: 100M
+      requests:
+        cpu: "50m"
+        memory: 50M
+  - name: mongodb-agent-readinessprobe
+    resources:
+      requests:
+        cpu: "50m"
+```
+
 ### Prometheus
 
 Expose metrics for prometheus

@@ -184,6 +184,54 @@ tests:
           path: spec.statefulSet.spec.template.spec.containers[1].readinessProbe
           value: { failureThreshold: 40, initialDelaySeconds: 5, timeout: 60}
 
+  - it: should correctly apply init containers config
+    set:
+      initContainersAdditionalConfig:
+        - name: mongod-posthook
+          resources:
+            limits:
+              cpu: "100m"
+              memory: 100M
+            requests:
+              cpu: "50m"
+              memory: 50M
+        - name: mongodb-agent-readinessprobe
+          resources:
+            requests:
+              cpu: "50m"
+    asserts:
+      - equal:
+          path: spec.statefulSet.spec.template.spec.initContainers[0].name
+          value: "mongod-posthook"
+      - equal:
+          path: spec.statefulSet.spec.template.spec.initContainers[0].resources.requests
+          value: {cpu: "50m", memory: "50M"}
+      - equal:
+          path: spec.statefulSet.spec.template.spec.initContainers[1].name
+          value: "mongodb-agent-readinessprobe"
+      - equal:
+          path: spec.statefulSet.spec.template.spec.initContainers[1].resources.requests.cpu
+          value: "50m"
+
+  - it: should render init containers even without containersAdditionalConfig
+    set:
+      initContainersAdditionalConfig:
+        - name: mongod-posthook
+          resources:
+            requests:
+              cpu: "50m"
+    asserts:
+      - equal:
+          path: spec.statefulSet.spec.template.spec.initContainers[0].name
+          value: "mongod-posthook"
+      - notExists:
+          path: spec.statefulSet.spec.template.spec.containers
+
+  - it: should not render the pod template when no container override is set
+    asserts:
+      - notExists:
+          path: spec.statefulSet.spec.template
+
   - it: should correctly apply metrics if enabled
     set:
       metrics:
