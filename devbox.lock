@@ -159,41 +159,41 @@
         }
       }
     },
-    "prek@0.4.12": {
-      "last_modified": "2026-08-08T22:24:59Z",
-      "resolved": "github:NixOS/nixpkgs/fe6deff5fad4a42d0e08d2bab3f2d6c7c88f3fe5#prek",
+    "prek@0.4.13": {
+      "last_modified": "2026-08-16T22:25:34Z",
+      "resolved": "github:NixOS/nixpkgs/21e032ff95225fb81164a2b2b696c5f6841fcb62#prek",
       "source": "devbox-search",
-      "version": "0.4.12",
+      "version": "0.4.13",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/0vh1mjac0drv4wd8vid8ycbc6rzlic6g-prek-0.4.12",
+              "path": "/nix/store/a2jk6jy15180i1fcawg3v54dgiwkyp90-prek-0.4.13",
               "default": true
             }
           ],
-          "store_path": "/nix/store/0vh1mjac0drv4wd8vid8ycbc6rzlic6g-prek-0.4.12"
+          "store_path": "/nix/store/a2jk6jy15180i1fcawg3v54dgiwkyp90-prek-0.4.13"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/x78ysf3jhp1p1gwh0l19g9jzql3vr875-prek-0.4.12",
+              "path": "/nix/store/xb0nkpw90b38wz6dbh58mssndlqqzln3-prek-0.4.13",
               "default": true
             }
           ],
-          "store_path": "/nix/store/x78ysf3jhp1p1gwh0l19g9jzql3vr875-prek-0.4.12"
+          "store_path": "/nix/store/xb0nkpw90b38wz6dbh58mssndlqqzln3-prek-0.4.13"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/4qw75m2ihfzx9vrp35r5hrxqs1pbxas7-prek-0.4.12",
+              "path": "/nix/store/hppnf9l7fa43fb8179jsb717bj9dd7fh-prek-0.4.13",
               "default": true
             }
           ],
-          "store_path": "/nix/store/4qw75m2ihfzx9vrp35r5hrxqs1pbxas7-prek-0.4.12"
+          "store_path": "/nix/store/hppnf9l7fa43fb8179jsb717bj9dd7fh-prek-0.4.13"
         }
       }
     },
