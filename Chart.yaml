@@ -10,4 +10,4 @@ keywords:
   - operator
 icon: https://mongodb-images-new.s3.eu-west-1.amazonaws.com/leaf-green-dark.png
 version: "0.5.0"
-appVersion: "8.0.28"
+appVersion: "8.3.8"
