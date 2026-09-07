@@ -4,6 +4,16 @@
     "github>plopoyop/renovate-config",
     "github>plopoyop/renovate-config:automerge-devbox"
   ],
+  "description": "The shared preset pulls in :ignoreModulesAndTests, whose **/tests/** entry would hide the unit test from the custom managers below",
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**",
+    "**/examples/**",
+    "**/__tests__/**",
+    "**/test/**",
+    "**/__fixtures__/**"
+  ],
   "packageRules": [
     {
       "description": "The MCK community reconciler pulls quay.io/mongodb/mongodb-community-server:<version>-ubi8, so only track versions published with that suffix",
