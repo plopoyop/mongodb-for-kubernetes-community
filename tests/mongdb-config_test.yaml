@@ -16,7 +16,7 @@ tests:
       - equal:
           path: spec.version
           # renovate: datasource=docker depName=mongodb/mongodb-community-server
-          value: "8.0.28"
+          value: "8.3.8"
       - notExists:
           path: spec.additionalConnectionStringConfig
       - notExists:

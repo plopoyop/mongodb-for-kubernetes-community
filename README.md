@@ -374,7 +374,7 @@ reconciler pulls, `quay.io/mongodb/mongodb-community-server:<version>-ubi8`. A s
 bumps `values.yaml`, the `appVersion` in `Chart.yaml`, the snippets in this README and the
 default-values unit test.
 
-Patch releases inside the current release series (`8.0.x`) are automerged after three days
+Patch releases inside the current release series (`8.3.x`) are automerged after three days
 once the unit tests pass. Minor and major bumps (`8.0` → `8.2`) are left for manual review,
 because changing the release series requires deciding on `featureCompatibilityVersion`
 first.
