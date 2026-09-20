@@ -1,11 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/HEAD)
+## [0.5.1](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.5.1) (2026-09-20)
 
-[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.5.0...HEAD)
+[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.5.0...0.5.1)
 
 ## ⚙️ Dependencies
 
+- feat\(ci\): update renovatebot/github-action action \(v46.2.5 → v46.3.1\) [\#64](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/64) ([plopoyop](https://github.com/plopoyop))
 - fix\(ci\): update renovatebot/github-action action \(v46.2.4 → v46.2.5\) [\#62](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/62) ([plopoyop](https://github.com/plopoyop))
 - fix\(ci\): update renovatebot/github-action action \(v46.2.2 → v46.2.4\) [\#60](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/60) ([plopoyop](https://github.com/plopoyop))
 - feat\(container\): update image mongodb/mongodb-community-server \(8.0.28 → 8.3.8\) [\#58](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/58) ([plopoyop](https://github.com/plopoyop))
