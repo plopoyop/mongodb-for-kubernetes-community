@@ -1,6 +1,6 @@
 name: example-mongodb
 members: 3
-version: "8.3.8"
+version: "9.0.2"
 adminPassword: change-me
 user:
   name: admin
