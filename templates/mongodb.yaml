@@ -47,6 +47,12 @@ spec:
             name: data-volume
           spec:
             accessModes: [ "ReadWriteOnce" ]
+{{- with .Values.storageClassName }}
+            storageClassName: {{ . | quote }}
+{{- end }}
+{{- with .Values.volumeAttributesClassName }}
+            volumeAttributesClassName: {{ . | quote }}
+{{- end }}
             resources:
               requests:
                 storage: {{ .Values.dataVolumeStorage }}
@@ -54,6 +60,12 @@ spec:
             name: logs-volume
           spec:
             accessModes: [ "ReadWriteOnce" ]
+{{- with .Values.storageClassName }}
+            storageClassName: {{ . | quote }}
+{{- end }}
+{{- with .Values.volumeAttributesClassName }}
+            volumeAttributesClassName: {{ . | quote }}
+{{- end }}
             resources:
               requests:
                 storage: {{ .Values.logVolumeStorage }}

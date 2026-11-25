@@ -4,7 +4,7 @@ This repository contains a Helm chart for deploying MongoDB ReplicaSet on Kubern
 
 ## 📌 General Information
 
-- **MongoDB Kubernetes Operator**: [MongoDB For Kubernetes](https://github.com/mongodb/mongodb-kubernetes) — validated against MCK `1.10.0` (CRD `mongodbcommunity.mongodb.com/v1`)
+- **MongoDB Kubernetes Operator**: [MongoDB For Kubernetes](https://github.com/mongodb/mongodb-kubernetes) — validated against MCK `1.16.0` (CRD `mongodbcommunity.mongodb.com/v1`)
 - **Git Repository**: [mongodb-for-kubernetes-community](https://github.com/plopoyop/mongodb-for-kubernetes-community)
 - **Helm Repository**: [https://plopoyop.github.io/charts/](https://plopoyop.github.io/charts/)
 - **Maintainer**: [plopoyop](https://github.com/plopoyop)
@@ -73,7 +73,19 @@ connectionStringSecretName: ""
 
 dataVolumeStorage: "10Gi"
 logVolumeStorage: "2Gi"
+storageClassName: ""
+volumeAttributesClassName: ""
 ```
+
+### 💾 Storage
+
+`dataVolumeStorage` and `logVolumeStorage` set the size of the `data-volume` and
+`logs-volume` PersistentVolumeClaims. `storageClassName` and `volumeAttributesClassName`
+apply to both volumes and are omitted when empty (the cluster default StorageClass is used).
+`volumeAttributesClassName` requires MCK `1.15.0` or later; older operators silently drop it.
+
+These fields are part of the StatefulSet `volumeClaimTemplates`, which are immutable: changing
+them on an existing release requires recreating the StatefulSet and its volumes.
 
 ### 🔐 Admin Password
 
@@ -113,6 +125,11 @@ additionalUsers:
     scramCredentialsSecretName: ""
     connectionStringSecretName: ""
 ```
+
+> [!WARNING]
+> `connectionStringSecretName` (for `user` and `additionalUsers`) must not point to an existing
+> Secret that the operator does not own. Since MCK `1.16.0` the `MongoDBCommunity` resource then
+> enters the `Failed` phase (older versions only logged the error).
 
 ### ⚠️ Service Account
 
