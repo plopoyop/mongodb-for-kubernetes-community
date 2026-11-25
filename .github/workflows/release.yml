@@ -37,19 +37,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Check if tag exists
+      - name: Check if tag or release exists
         id: tag_exists
         run: |
+          if [ -z "$NEXT_VERSION" ]; then
+            echo "::error::Unable to compute next version"
+            exit 1
+          fi
           TAG_EXISTS=false
-          if git tag -l | grep -E "^${{ steps.version.outputs.next-version }}$" > /dev/null; then
+          # A draft release without its tag must also block, or a new draft is created
+          if git tag -l | grep -Fx "$NEXT_VERSION" > /dev/null || gh release view "$NEXT_VERSION" > /dev/null 2>&1; then
             TAG_EXISTS=true
           fi
           echo "exists=$TAG_EXISTS" >> $GITHUB_OUTPUT
+        env:
+          NEXT_VERSION: ${{ steps.version.outputs.next-version }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Skip if no new release
         if: steps.tag_exists.outputs.exists == 'true'
         run: |
-          echo "Tag ${{ steps.version.outputs.next-version }} already exists, skipping release"
+          echo "Tag or release ${{ steps.version.outputs.next-version }} already exists, skipping release"
           exit 0
 
       - name: Generate changelog
@@ -97,5 +105,7 @@ jobs:
           name: ${{ steps.version.outputs.next-version }}
           body: ${{ steps.changelog_body.outputs.body }}
           draft: true
+          allowUpdates: true
+          updateOnlyUnreleased: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
