@@ -56,6 +56,10 @@ serviceAccount:
 
 dataVolumeStorage: "10Gi"
 logVolumeStorage: "2Gi"
+# Applied to both data and logs volumes; immutable once the StatefulSet exists
+storageClassName: ""
+# Requires MCK >= 1.15.0
+volumeAttributesClassName: ""
 
 additionalMongodConfig: {}
 additionalConnectionStringConfig: {}

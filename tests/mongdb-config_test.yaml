@@ -49,6 +49,14 @@ tests:
       - equal:
           path: spec.statefulSet.spec.volumeClaimTemplates[1].spec.resources.requests.storage
           value: "2Gi"
+      - notExists:
+          path: spec.statefulSet.spec.volumeClaimTemplates[0].spec.storageClassName
+      - notExists:
+          path: spec.statefulSet.spec.volumeClaimTemplates[0].spec.volumeAttributesClassName
+      - notExists:
+          path: spec.statefulSet.spec.volumeClaimTemplates[1].spec.storageClassName
+      - notExists:
+          path: spec.statefulSet.spec.volumeClaimTemplates[1].spec.volumeAttributesClassName
 
   - it: should have the specified members number
     set:
@@ -188,6 +196,24 @@ tests:
       - equal:
           path: spec.statefulSet.spec.template.spec.containers[1].readinessProbe
           value: { failureThreshold: 40, initialDelaySeconds: 5, timeout: 60}
+
+  - it: should set storage class and volume attributes class on both volumes
+    set:
+      storageClassName: "fast-ssd"
+      volumeAttributesClassName: "gold"
+    asserts:
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[0].spec.storageClassName
+          value: "fast-ssd"
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[0].spec.volumeAttributesClassName
+          value: "gold"
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[1].spec.storageClassName
+          value: "fast-ssd"
+      - equal:
+          path: spec.statefulSet.spec.volumeClaimTemplates[1].spec.volumeAttributesClassName
+          value: "gold"
 
   - it: should correctly apply init containers config
     set:
