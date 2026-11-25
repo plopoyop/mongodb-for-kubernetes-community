@@ -1,11 +1,30 @@
 # Changelog
 
-## [0.5.1](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.5.1) (2026-09-20)
+## [0.6.0](https://github.com/plopoyop/mongodb-for-kubernetes-community/tree/0.6.0) (2026-11-25)
 
-[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.5.0...0.5.1)
+[Full Changelog](https://github.com/plopoyop/mongodb-for-kubernetes-community/compare/0.5.0...0.6.0)
+
+## 🚀 New Features
+
+- feat\(chart\): support MCK 1.16.0 and configurable volume classes [\#81](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/81) ([plopoyop](https://github.com/plopoyop))
+
+## 🐛 Bug Fixes
+
+- fix\(ci\): prevent duplicate release drafts [\#82](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/82) ([plopoyop](https://github.com/plopoyop))
 
 ## ⚙️ Dependencies
 
+- feat\(ci\): update jetify-com/devbox-install-action action \(v0.15.0 → v0.16.0\) [\#80](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/80) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.3.13 → v46.3.14\) [\#79](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/79) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.3.12 → v46.3.13\) [\#77](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/77) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.3.10 → v46.3.12\) [\#75](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/75) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.3.9 → v46.3.10\) [\#74](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/74) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.3.8 → v46.3.9\) [\#72](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/72) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.3.7 → v46.3.8\) [\#70](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/70) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.3.6 → v46.3.7\) [\#69](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/69) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.3.3 → v46.3.6\) [\#67](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/67) ([plopoyop](https://github.com/plopoyop))
+- fix\(ci\): update renovatebot/github-action action \(v46.3.1 → v46.3.3\) [\#66](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/66) ([plopoyop](https://github.com/plopoyop))
+- feat\(ci\)!: Update ubuntu \(24.04 → 26.04\) [\#65](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/65) ([plopoyop](https://github.com/plopoyop))
 - feat\(ci\): update renovatebot/github-action action \(v46.2.5 → v46.3.1\) [\#64](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/64) ([plopoyop](https://github.com/plopoyop))
 - fix\(ci\): update renovatebot/github-action action \(v46.2.4 → v46.2.5\) [\#62](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/62) ([plopoyop](https://github.com/plopoyop))
 - fix\(ci\): update renovatebot/github-action action \(v46.2.2 → v46.2.4\) [\#60](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/60) ([plopoyop](https://github.com/plopoyop))
@@ -15,6 +34,10 @@
 
 **Merged pull requests:**
 
+- fix\(deps\): update prek \(0.5.7 → 0.5.10\) [\#78](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/78) ([plopoyop](https://github.com/plopoyop))
+- fix\(deps\): update prek \(0.5.5 → 0.5.7\) [\#76](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/76) ([plopoyop](https://github.com/plopoyop))
+- feat\(deps\): update git \(2.55.0 → 2.56.0\) [\#73](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/73) ([plopoyop](https://github.com/plopoyop))
+- feat\(deps\): update prek \(0.4.14 → 0.5.5\) [\#71](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/71) ([plopoyop](https://github.com/plopoyop))
 - feat\(deps\): update go-task \(3.52.0 → 3.53.1\) [\#63](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/63) ([plopoyop](https://github.com/plopoyop))
 - fix\(deps\): update prek \(0.4.13 → 0.4.14\) [\#61](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/61) ([plopoyop](https://github.com/plopoyop))
 - feat\(deps\): update go-task \(3.48.0 → 3.52.0\) [\#59](https://github.com/plopoyop/mongodb-for-kubernetes-community/pull/59) ([plopoyop](https://github.com/plopoyop))
